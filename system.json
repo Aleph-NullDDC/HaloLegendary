@@ -3,7 +3,7 @@
   "title": "Halo: Legendary",
   "description": "TBA",
   "authors": "Stream & Meme Enterprises",
-  "url": "https://github.com/Aleph-NullDDC/HaloLegendary",
+  "url": "https://github.com/Aleph-NullDDC/HaloLegendary/tree/SammyTest",
   "license": "LICENSE.txt",
   "version": "0.0.1",
   "compatibility": {
@@ -105,10 +105,10 @@
       "flags": {}
     }
   ],
-  "relationships": {}, 
+  "relationships": {},
   "socket": false,
   "manifest": "https://github.com/Aleph-NullDDC/HaloLegendary/raw/master/system.json",
-  "download": "https://github.com/Aleph-NullDDC/HaloLegendary/archive/refs/heads/master.zip",
+  "download": "https://github.com/Aleph-NullDDC/HaloLegendary/archive/refs/heads/SammyTest.zip",
   "protected": false,
   "gridDistance": 1,
   "gridUnits": "m",
