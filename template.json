@@ -47,8 +47,8 @@
             },
             "human_skills": {
                 "skills": {
-                    "accounting": {
-                        "label": "Accounting",
+                    "hippo": {
+                        "label": "Hippo",
                         "proficiency": 10,
                         "failure": false
                     },
@@ -429,7 +429,7 @@
                     }
                 },
                 "typedSkills":{
-                    
+
                 }
             }
         },

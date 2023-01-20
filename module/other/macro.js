@@ -1,12 +1,12 @@
 
 function GetTypeSkillRatingsFromInput(inputText){
-    
+
     let matchStr = "(Art|Craft|Foreign Language|Native Language|Military Science|Pilot|Science)\\s?\\((\\w.*?)\\)\\s?(\\d?\\d)%";
     let re = new RegExp(matchStr, "gi");
-    
+
     let matches = [];
     let match;
-    
+
     try{
         while(match = re.exec(inputText)){
             matches.push({group: match[1], label: match[2], proficiency: parseInt(match[3]), failure: false});
@@ -16,17 +16,17 @@ function GetTypeSkillRatingsFromInput(inputText){
         console.log('GetAttributeFromInput Error');
         console.log(ex);
     }
-    
+
     return matches;
 }
 
 function GetAttributeFromInput(inputText, attribute){
-    
+
     let matchStr = "(?:" + attribute + "\\s)(\\d\\d?)";
     let re = new RegExp(matchStr, "i");
     let results = inputText.match(re);
     let attributeScore = 10;
-    
+
     try{
         if(results != null && results.length > 1){
             attributeScore = parseInt(results[1]);
@@ -39,17 +39,17 @@ function GetAttributeFromInput(inputText, attribute){
         console.log('GetAttributeFromInput Error');
         console.log(ex);
     }
-    
+
     return attributeScore;
 }
 
 function GetSkillRatingsFromInput(inputText, skill){
-    
+
     let matchStr = "(?:" + skill + "\\s)(\\d\\d?)";
     let re = new RegExp(matchStr, "i");
     let results = inputText.match(re);
     let skillValue = 0;
-    
+
     try{
         if(results != null && results.length > 1){
             skillValue = parseInt(results[1]);
@@ -59,7 +59,7 @@ function GetSkillRatingsFromInput(inputText, skill){
         console.log('GetAttributeFromInput Error');
         console.log(ex);
     }
-    
+
     return skillValue;
 }
 
@@ -67,7 +67,7 @@ async function RegexParseNpcStatBlock(inputStr, actorType){
     let actorData = {};
 
     let shortDescription = "";
-    
+
     actorData.type = actorType;
     actorData.data = {};
     actorData.data.statistics = {};
@@ -77,12 +77,12 @@ async function RegexParseNpcStatBlock(inputStr, actorType){
 
     actorData.data.health = {value: 10, min: 0, max: 10};
     actorData.data.wp = {value: 10, min: 0, max: 10};
-    
+
     let tempStr = "";
     let arr = [];
-    
+
     tempStr = inputStr.split(/\r?\n/);
-    
+
     if(tempStr.length > 1){
         actorData.name = tempStr[0];
         shortDescription = tempStr[1];
@@ -97,7 +97,7 @@ async function RegexParseNpcStatBlock(inputStr, actorType){
     else if(actorType === 'npc'){
         actorData.data.shortDescription = shortDescription;
     }
-    
+
     actorData.data.statistics.str = {value: GetAttributeFromInput(inputStr, "STR"), distinguishing_feature: ""};
     actorData.data.statistics.con = {value: GetAttributeFromInput(inputStr, "CON"), distinguishing_feature: ""};
     actorData.data.statistics.dex = {value: GetAttributeFromInput(inputStr, "DEX"), distinguishing_feature: ""};
@@ -112,6 +112,7 @@ async function RegexParseNpcStatBlock(inputStr, actorType){
         actorData.data.wp = {max: actorData.data.statistics.pow.value, value: GetAttributeFromInput(inputStr, "WP"), min: 0};
     }
 
+    actorData.data.skills.hippo = {"label": "Hippo", proficiency: GetSkillRatingsFromInput(inputStr, "HIPPO"), failure: false};
     actorData.data.skills.accounting = {"label": "Accounting", proficiency: GetSkillRatingsFromInput(inputStr, "ACCOUNTING"), failure: false};
     actorData.data.skills.alertness = {"label": "Alertness", proficiency: GetSkillRatingsFromInput(inputStr, "ALERTNESS"), failure: false};
     actorData.data.skills.anthropology = {"label": "Anthropology", proficiency: GetSkillRatingsFromInput(inputStr, "ANTHROPOLOGY"), failure: false};
@@ -156,7 +157,7 @@ async function RegexParseNpcStatBlock(inputStr, actorType){
         const element = arr[index];
         actorData.data.typedSkills['tskill_' + index.toString()] = element;
     }
-    
+
     console.log(actorData);
 
     const newActors = await Actor.createDocuments([actorData]);
@@ -169,7 +170,7 @@ async function GetUserInput(){
             <div class="form-group">
                 <label>Actor Type: </label>
                 <div class="form-fields">
-                    <select name="actor-type">                        
+                    <select name="actor-type">
                         <option value="npc" selected>NPC</option>
                         <option value="unnatural">Unnatural</option>
                         <option value="agent">Agent</option>
@@ -183,7 +184,7 @@ async function GetUserInput(){
                 </div>
             </div>
     </form>`;
-    
+
     new Dialog({
         title: "Stat Block Parser", // Change the title if you want.
         content,
@@ -192,7 +193,7 @@ async function GetUserInput(){
                 label: "PARSE",
                 callback: async (html) => {
                     const textInput = html.find("[name=parse-input]")[0].value;
-                    
+
                     const actorType = html.find("[name=actor-type]")[0].value;
 
                     RegexParseNpcStatBlock(textInput, actorType);
