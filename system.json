@@ -107,7 +107,7 @@
   ],
   "relationships": {},
   "socket": false,
-  "manifest": "https://github.com/Aleph-NullDDC/HaloLegendary/raw/master/system.json",
+  "manifest": "https://github.com/Aleph-NullDDC/HaloLegendary/raw/SammyTest/system.json",
   "download": "https://github.com/Aleph-NullDDC/HaloLegendary/archive/refs/heads/SammyTest.zip",
   "protected": false,
   "gridDistance": 1,
